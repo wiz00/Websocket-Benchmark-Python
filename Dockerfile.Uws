@@ -1,4 +1,4 @@
-FROM python:3.9.19-slim
+FROM python:3.8.1-slim
 
 WORKDIR /home/websocket
 COPY ./requirements-uws.txt .
