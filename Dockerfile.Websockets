@@ -1,0 +1,11 @@
+FROM python:3.9.19-slim
+
+WORKDIR /home/websocket
+COPY ./requirements-websockets.txt .
+COPY ./python-websockets_websocket-benchmark-server.py .
+
+RUN pip install -r requirements-websockets.txt
+
+EXPOSE 8080
+
+CMD ["python", "python-websockets_websocket-benchmark-server.py"]

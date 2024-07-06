@@ -1,8 +1,9 @@
+import os
 import asyncio
 import json
-import websockets
+from websockets.server import serve
 import time
-
+import uvloop
 
 class Server:
     """
@@ -11,7 +12,7 @@ class Server:
 
     """
 
-    def start(self):
+    async def start(self):
         """
 
         Initializes the websocket server
@@ -21,10 +22,12 @@ class Server:
         :return: void
 
         """
-        start_server = websockets.serve(self.listen, "0.0.0.0", 8080)
+        async with serve(self.listen, "0.0.0.0", 8080):
+            await asyncio.Future()
+        # start_server = websockets.serve(self.listen, "0.0.0.0", 8080)
 
-        asyncio.get_event_loop().run_until_complete(start_server)
-        asyncio.get_event_loop().run_forever()
+        # asyncio.get_event_loop().run_until_complete(start_server)
+        # asyncio.get_event_loop().run_forever()
 
     @staticmethod
     def get_timestamp():
@@ -95,6 +98,9 @@ class Server:
             pass
 
 
-""" Create an instance of the websocket server and start it """
-server = Server()
-server.start()
+if __name__ == "__main__":
+    """ Create an instance of the websocket server and start it """
+    if os.getenv("LOOP", None) == "uvloop":
+        uvloop.install()
+    server = Server()
+    asyncio.run(server.start())
